@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ProductService} from '../../service/product.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {Subscription} from "rxjs";
+import {Product} from "../../model/product";
 
 @Component({
   selector: 'app-product-delete',
@@ -10,33 +12,46 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 })
 export class ProductDeleteComponent implements OnInit {
 
-  productForm: FormGroup;
-  id: number;
+  sub:Subscription;
+
+  product: Product = {
+    id:0,
+    name:"name",
+    description: "Mo ta",
+    price: 0
+  };
+
+  id: number | undefined;
 
   constructor(private productService: ProductService,
-              private activatedRoute: ActivatedRoute,
-              private router: Router) {
-    this.activatedRoute.paramMap.subscribe((paramMap: ParamMap) => {
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
+    this.sub = this.activatedRoute.paramMap.subscribe( (paramMap: ParamMap) => {
+      // @ts-ignore
       this.id = +paramMap.get('id');
-      const product = this.getProduct(this.id);
-      this.productForm = new FormGroup({
-        id: new FormControl(product.id),
-        name: new FormControl(product.name),
-        price: new FormControl(product.price),
-        description: new FormControl(product.description),
-      });
-    });
+      this.getProduct(this.id);
+    })
   }
 
   ngOnInit() {
   }
 
-  getProduct(id: number) {
-    return this.productService.findById(id);
+  getProduct(id: number){
+    this.productService.findProductById(id).
+    subscribe(product =>{
+      this.product = product;
+    });
   }
 
   deleteProduct(id: number) {
-    this.productService.deleteProduct(id);
-    this.router.navigate(['/product/list']);
+    this.productService.deleteProduct(id).subscribe(() => {
+      alert('Xóa thành công!');
+      this.router.navigate(['/category/list']);
+    }, e => {
+      console.log(e);
+    });
   }
+
+
+
 }

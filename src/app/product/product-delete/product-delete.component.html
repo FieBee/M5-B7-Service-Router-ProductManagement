@@ -1,25 +1,17 @@
-<h1>Xoá sản phẩm</h1>
-<form [formGroup]="productForm" (ngSubmit)="deleteProduct(id)">
-  <table>
-    <tr>
-      <td>Mã sản phẩm:</td>
-      <td><input type="number" formControlName="id"></td>
-    </tr>
-    <tr>
-      <td>Tên sản phẩm:</td>
-      <td><input type="text" formControlName="name"></td>
-    </tr>
-    <tr>
-      <td>Giá sản phẩm</td>
-      <td><input type="number" formControlName="price"></td>
-    </tr>
-    <tr>
-      <td>Mô tả về sản phẩm</td>
-      <td><input type="text" formControlName="description"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><button>Xoá</button></td>
-    </tr>
-  </table>
+<h1 style="text-align: center">Sửa sản phẩm </h1>
+<form (ngSubmit)="deleteProduct(id)" class="container">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" name="name" [(ngModel)]="product.name" class="form-control" id="name" aria-describedby="" placeholder="">
+  </div>
+  <div class="form-group">
+    <label for="price">Price</label>
+    <input type="number" name="price" [(ngModel)]="product.price" class="form-control" id="price" aria-describedby="" placeholder="">
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="description" [(ngModel)]="product.description" class="form-control" id="description" aria-describedby="" placeholder=""></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
 </form>

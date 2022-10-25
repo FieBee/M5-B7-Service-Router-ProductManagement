@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from '../../service/product.service';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {FormControl, FormGroup} from '@angular/forms';
+import {Subscription} from "rxjs";
+import {Product} from "../../model/product";
 
 @Component({
   selector: 'app-product-edit',
@@ -9,33 +11,45 @@ import {FormControl, FormGroup} from '@angular/forms';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
-  productForm: FormGroup;
-  id: number;
+
+
+  sub:Subscription;
+
+  product: Product = {
+    id:0,
+    name:"name",
+    description: "Mo ta",
+    price: 0
+  };
+
+  id: number | undefined;
 
   constructor(private productService: ProductService,
+              private router: Router,
               private activatedRoute: ActivatedRoute) {
-    this.activatedRoute.paramMap.subscribe((paramMap: ParamMap) => {
+    this.sub = this.activatedRoute.paramMap.subscribe( (paramMap: ParamMap) => {
+      // @ts-ignore
       this.id = +paramMap.get('id');
-      const product = this.getProduct(this.id);
-      this.productForm = new FormGroup({
-        id: new FormControl(product.id),
-        name: new FormControl(product.name),
-        price: new FormControl(product.price),
-        description: new FormControl(product.description),
-      });
+      this.getProduct(this.id);
+    })
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  getProduct(id: number){
+    this.productService.findProductById(id).
+    subscribe(product =>{
+      this.product = product;
     });
   }
 
-  ngOnInit() {
-  }
+  updateProduct(){
+    this.productService.editProduct(this.product.id, this.product).subscribe(()=>{
+      this.router.navigate(['/']);
+    });
+    // this.router.navigateByUrl("/");
 
-  getProduct(id: number) {
-    return this.productService.findById(id);
-  }
-
-  updateProduct(id: number) {
-    const product = this.productForm.value;
-    this.productService.updateProduct(id, product);
-    alert('Cập nhật thành công');
   }
 }

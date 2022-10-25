@@ -18,7 +18,12 @@ const routes: Routes = [{
 }, {
   path: 'product/delete/:id',
   component: ProductDeleteComponent
-}];
+}
+// ,{
+//   path: 'category',
+//   loadChildren: () => import('./category/category.module').then(module => module.CategoryModule)
+// }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
