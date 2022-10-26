@@ -22,7 +22,7 @@ export class ProductEditComponent implements OnInit {
     price: 0
   };
 
-  id: number | undefined;
+  id: number ;
 
   constructor(private productService: ProductService,
               private router: Router,

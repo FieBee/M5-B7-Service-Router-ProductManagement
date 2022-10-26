@@ -16,6 +16,7 @@ export class ProductService {
   }
 
   getAll(): Observable<Product[]> {
+    // console.log("day la benservice" )
     return this.http.get<Product[]>(API_URL + '/product');
   }
 
@@ -27,7 +28,7 @@ export class ProductService {
     return this.http.post<Product>(API_URL + `/product`, product);
   }
 
-  deleteProduct(id: number | undefined): Observable<Product> {
+  deleteProduct(id: number): Observable<Product> {
     return this.http.delete<Product>(`${API_URL}/product/${id}`);
   }
 
