@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 import {CategoryService} from '../../service/category.service';
 import {ActivatedRoute, ParamMap, Router} from '@angular/router';
+import {Category} from "../../model/category";
 
 @Component({
   selector: 'app-category-delete',
@@ -9,7 +10,11 @@ import {ActivatedRoute, ParamMap, Router} from '@angular/router';
   styleUrls: ['./category-delete.component.css']
 })
 export class CategoryDeleteComponent implements OnInit {
-  categoryForm: FormGroup;
+
+  category: Category ={
+    id:0,
+    name:""
+  }
   id: number;
 
   constructor(private categoryService: CategoryService,
@@ -24,11 +29,18 @@ export class CategoryDeleteComponent implements OnInit {
   ngOnInit() {
   }
 
-  getCategory(id: number) {
-    return this.categoryService.findById(id).subscribe(category => {
-      this.categoryForm = new FormGroup({
-        name: new FormControl(category.name),
-      });
+  // getCategory(id: number) {
+  //   return this.categoryService.findById(id).subscribe(category => {
+  //     this.categoryForm = new FormGroup({
+  //       name: new FormControl(category.name),
+  //     });
+  //   });
+  // }
+
+  getCategory(id: number){
+    this.categoryService.findById(id).
+    subscribe(category =>{
+      this.category = category;
     });
   }
 

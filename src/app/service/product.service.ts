@@ -16,7 +16,6 @@ export class ProductService {
   }
 
   getAll(): Observable<Product[]> {
-    // console.log("day la benservice" )
     return this.http.get<Product[]>(API_URL + '/product');
   }
 
@@ -34,5 +33,9 @@ export class ProductService {
 
   editProduct(id: number, product: Product): Observable<Product> {
     return this.http.put<Product>(`${API_URL}/product/${id}`, product);
+  }
+
+  getAllProductByCategory(id:Number):Observable<Product[]>{
+    return this.http.get<Product[]>(API_URL+`/category/${id}/products`)
   }
 }
